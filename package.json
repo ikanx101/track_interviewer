@@ -1,0 +1,37 @@
+{
+  "name": "iman",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IMaN - Interviewer Monitoring at Nutrifood",
+  "scripts": {
+    "dev": "next dev -p 1526",
+    "build": "prisma generate && next build",
+    "start": "next start -p ${PORT:-1526}",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "node prisma/seed.mjs",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "exceljs": "^4.4.0",
+    "jose": "^5.9.6",
+    "next": "^15.5.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "prisma": "^6.16.2",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.9.2"
+  },
+  "allowScripts": {
+    "@prisma/engines@6.16.2": true,
+    "prisma@6.16.2": true,
+    "@prisma/client@6.16.2": true
+  }
+}

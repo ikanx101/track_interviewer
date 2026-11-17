@@ -1,0 +1,111 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectStatus {
+  BERJALAN
+  SELESAI
+}
+
+enum TransportStatus {
+  DIAJUKAN
+  DISETUJUI
+  DIBAYAR
+}
+
+model Interviewer {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  reports   Report[]
+  matches   Matching[]
+}
+
+model Project {
+  id        Int           @id @default(autoincrement())
+  code      String        @unique
+  name      String
+  target    Int           @default(0)
+  startDate DateTime      @db.Date
+  isPC      Boolean       @default(false)
+  status    ProjectStatus @default(BERJALAN)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  items     ReportItem[]
+  matches   Matching[]
+}
+
+/// Rekap akhir hari: satu per interviewer per tanggal.
+model Report {
+  id                     Int              @id @default(autoincrement())
+  interviewerId          Int
+  date                   DateTime         @db.Date
+  startTime              String?          // "HH:MM"
+  endTime                String?          // "HH:MM"
+  otherAreas             String?
+  notes                  String?
+  transportAmount        Int?             // rupiah; null = tidak ada perolehan PC
+  transportNote          String?
+  transportStatus        TransportStatus?
+  transportStatusUpdatedAt DateTime?
+  revision               Int              @default(1)
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  interviewer            Interviewer      @relation(fields: [interviewerId], references: [id])
+  items                  ReportItem[]
+  history                ReportHistory[]
+
+  @@unique([interviewerId, date])
+  @@index([date])
+}
+
+/// Perolehan per project dalam satu rekap.
+model ReportItem {
+  id        Int     @id @default(autoincrement())
+  reportId  Int
+  projectId Int
+  count     Int
+  area      String
+  report    Report  @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id])
+
+  @@unique([reportId, projectId])
+}
+
+/// Snapshot versi rekap sebelumnya (audit log) — data tidak boleh hilang.
+model ReportHistory {
+  id        Int      @id @default(autoincrement())
+  reportId  Int
+  revision  Int      // nomor revisi dari snapshot ini
+  snapshot  Json
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId])
+}
+
+/// Angka data masuk yang diisi Admin Field untuk pencocokan.
+model Matching {
+  id            Int         @id @default(autoincrement())
+  interviewerId Int
+  projectId     Int
+  date          DateTime    @db.Date
+  actualCount   Int
+  note          String?
+  followedUp    Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  interviewer   Interviewer @relation(fields: [interviewerId], references: [id])
+  project       Project     @relation(fields: [projectId], references: [id])
+
+  @@unique([interviewerId, projectId, date])
+  @@index([date])
+}
