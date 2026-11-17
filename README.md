@@ -41,7 +41,7 @@ Versi saat ini: **v1.0.0** (17 November 2026)
 - **Transport PC**: mengubah status pembayaran transport (Diajukan → Disetujui → Dibayar).
 - **Kelola Data**: tambah/ubah nama/nonaktifkan/aktifkan kembali interviewer; tambah/ubah project (kode, nama, target, tanggal mulai, tanda *Project PC*, status Masih berjalan/Selesai).
 - Melihat jumlah revisi rekap dan isi versi sebelumnya (audit log).
-- Unduh data: **XLSX** (sheet Rekap Harian, Pencocokan, Transport, Interviewer, Project) dan **CSV** (sesuai tab yang sedang dibuka).
+- Unduh data: **XLSX** (sheet Rekap Harian, Rekap Periode, Pencocokan, Transport, Interviewer, Project) dan **CSV** (sesuai tab yang sedang dibuka).
 - Admin **tidak** dapat menghapus rekap dan tidak mengisi rekap atas nama interviewer.
 
 ### Interviewer (`INTERVIEWER`)
@@ -317,7 +317,7 @@ Mengubah skema: edit `prisma/schema.prisma` → `npx prisma migrate dev --name <
 6. **Rekap Periode** (`/admin/rekap`): pilih rentang bebas atau pintasan *Minggu ini / Bulan ini / Bulan lalu*; total per interviewer & per project.
 7. **Pencocokan** (`/admin/pencocokan`): isi **angka data masuk** per interviewer/project/tanggal. Baris dengan selisih ≠ 0 berwarna merah; yang belum diisi berstatus *Belum dicocokkan*. Tulis catatan tindak lanjut dan centang **Sudah ditindaklanjuti** setelah dikonfirmasi ke interviewer.
 8. **Transport PC** (`/admin/transport`): ubah status **Diajukan → Disetujui → Dibayar**. Setelah Disetujui/Dibayar, interviewer tidak bisa lagi mengubah nominalnya.
-9. **Unduh data**: tombol **CSV** (data tab yang sedang dibuka) dan **XLSX** (semua sheet: Rekap Harian, Pencocokan, Transport, Interviewer, Project). Unduh berkala sebagai cadangan.
+9. **Unduh data**: tombol **CSV** (data tab yang sedang dibuka) dan **XLSX** (semua sheet: Rekap Harian, Rekap Periode, Pencocokan, Transport, Interviewer, Project). Unduh berkala sebagai cadangan.
 
 ## 10. Panduan Pengguna — Interviewer
 
