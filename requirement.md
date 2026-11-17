@@ -118,4 +118,17 @@ Catatan: karena interviewer tidak login, sistem tidak memverifikasi bahwa yang m
 4.	Mengubah isian yang salah, lalu menekan Perbarui rekap.
 5.	Sistem menimpa rekap lama untuk tanggal dan interviewer yang sama, sehingga tidak ada data ganda. Data tidak boleh hilang.
 
+# Teknologi
 
+Silakan gunakan semua teknologi dan metode yang dibutuhkan untuk membangun webapps ini. Database saya ingin disimpan menggunakan backend postgresql.
+
+# Deploy
+
+Ada dua pilihan untuk melakukan deploy webapps ini:
+
+1. Menggunakan docker.
+   - Buatkan Dockerfile untuk mengakomodir webapps ini.
+   - Buatkan juga skrip bash "start.sh" untuk memulai webapps ini. Buatkan juga skrip bash "stop.sh" untuk menghentikan webapps ini.
+   - Kelas webapps ini akan berjalan di port "1526".
+2. Menggunakan deploy ke railway.
+   - Buat panduan dan setting ke railway dengan mudah.
