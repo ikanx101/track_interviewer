@@ -1,0 +1,53 @@
+# IMaN - Interviewer Monitoring at Nutrifood
+# Cara termudah: ./start.sh   (lihat README.md)
+#
+# Mode database:
+#   - Bawaan  : app + PostgreSQL (service `db`, data di volume `pgdata`).
+#   - Eksternal: isi DATABASE_URL di .env lalu jalankan `./start.sh --external-db`
+#                (setara: docker compose up -d --build --no-deps app).
+#
+# Variabel dibaca dari file .env (interpolasi Compose) dengan nilai default di bawah.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-iman}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-iman_password}
+      POSTGRES_DB: ${POSTGRES_DB:-iman}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # Tidak di-expose ke host secara default. Untuk akses dari host (mis. pgAdmin),
+    # buka komentar di bawah (sebaiknya hanya di 127.0.0.1).
+    # ports:
+    #   - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    image: iman:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${APP_PORT:-1526}:1526"
+    environment:
+      PORT: 1526
+      # Jika DATABASE_URL kosong, pakai database bawaan (service `db`).
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-iman}:${POSTGRES_PASSWORD:-iman_password}@db:5432/${POSTGRES_DB:-iman}?schema=public}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
+      SESSION_SECRET: ${SESSION_SECRET:-iman-ganti-secret-ini-minimal-32-karakter}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    # Agar DATABASE_URL eksternal bisa menunjuk ke PostgreSQL di komputer host
+    # memakai host.docker.internal (juga di Linux).
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  pgdata:
