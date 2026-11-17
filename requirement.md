@@ -132,3 +132,7 @@ Ada dua pilihan untuk melakukan deploy webapps ini:
    - Kelas webapps ini akan berjalan di port "1526".
 2. Menggunakan deploy ke railway.
    - Buat panduan dan setting ke railway dengan mudah.
+  
+# Tugas
+
+Selain membangun webapps ini, buat juga readme.md yang berisi semua perjalanan pembuatan, log revisi versi aplikasi, dan cara penggunaan menggunakan Docker dan railway.
