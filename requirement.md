@@ -136,3 +136,38 @@ Ada dua pilihan untuk melakukan deploy webapps ini:
 # Tugas
 
 Selain membangun webapps ini, buat juga readme.md yang berisi semua perjalanan pembuatan, log revisi versi aplikasi, dan cara penggunaan menggunakan Docker dan railway.
+
+# Klarifikasi & Keputusan Tambahan (v1.0)
+
+Bagian ini melengkapi requirement di atas berdasarkan sesi klarifikasi. Jika ada pertentangan, bagian ini yang berlaku.
+
+## A. Logika & Struktur Data
+
+1.	**Akun Admin Field**: satu password bersama yang diatur melalui environment variable `ADMIN_PASSWORD`. Sesi login berlaku 12 jam (cookie HTTP-only bertanda tangan, secret dari `SESSION_SECRET`).
+2.	**Aturan selisih (Pencocokan)**:
+    o	Selisih = perolehan menurut rekap interviewer − angka data masuk yang diisi Admin Field.
+    o	Setiap selisih ≠ 0 ditandai (merah). Tidak ada toleransi.
+    o	Jika rekap ada tetapi data masuk belum diisi → status "Belum dicocokkan" (bukan selisih).
+    o	Setiap baris pencocokan memiliki kolom catatan tindak lanjut dan status "Sudah ditindaklanjuti".
+3.	**Data tidak boleh hilang**: rekap aktif ditimpa saat diperbarui, namun setiap versi sebelumnya disimpan di tabel riwayat (audit log). Admin dapat melihat jumlah revisi dan isi versi sebelumnya.
+4.	**Transport PC**:
+    o	Rekap baru dengan transport otomatis berstatus **Diajukan**.
+    o	Jika status sudah **Disetujui** atau **Dibayar**, nominal & keterangan transport terkunci dan tidak dapat diubah oleh interviewer melalui perbaikan rekap.
+5.	**Penanda project PC**: menggunakan checkbox "Project PC" yang ditandai manual oleh Admin Field (tidak bergantung pada teks kode project).
+6.	**Target project**: target total per project. Progres ditampilkan dua versi: berdasarkan rekap interviewer dan berdasarkan data masuk.
+
+## B. Detail Fungsional
+
+7.	**Area**: input teks bebas dengan saran otomatis (autocomplete) dari area yang pernah diisi sebelumnya.
+8.	**Rekap per periode**: rentang tanggal bebas + pintasan "Minggu ini", "Bulan ini", "Bulan lalu".
+9.	**Zona waktu**: WIB (Asia/Jakarta). Batas "hari ini" dan 7 hari ke belakang dihitung menurut WIB.
+10.	**Project Selesai**: pada form perbaikan, project yang sudah Selesai tetap muncul untuk tanggal yang sudah memiliki perolehan pada project tersebut.
+11.	**Hak admin atas data**: admin dapat mengubah nama interviewer. Admin tidak dapat menghapus rekap (hanya melihat).
+12.	**Unduhan**: XLSX berisi beberapa sheet (Rekap Harian, Pencocokan, Transport, Interviewer, Project); CSV berisi data sesuai tab/tampilan yang sedang dibuka.
+
+## C. Teknis & Deploy
+
+13.	**Stack**: Next.js (frontend + API dalam satu aplikasi), Prisma ORM, PostgreSQL, Tailwind CSS, desain mobile-first responsif.
+14.	**Docker**: `start.sh` menjalankan aplikasi + PostgreSQL melalui docker-compose (data PostgreSQL di volume persisten). Jika `DATABASE_URL` eksternal diisi, aplikasi memakai database tersebut. Aplikasi berjalan di port **1526**.
+15.	**Backup otomatis**: tidak termasuk versi ini; panduan backup manual (`pg_dump`) dicantumkan di README.
+16.	**Tampilan**: antarmuka Bahasa Indonesia, tampilan netral/bersih; logo dapat ditambahkan kemudian.
