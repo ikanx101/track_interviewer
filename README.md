@@ -440,7 +440,7 @@ Railway juga menyediakan fitur *Backups* pada volume database (tergantung paket)
    - Agen 2: **Tab monitoring admin** — Hari Ini, Riwayat Harian, Rekap Periode, Kelola Data.
    - Agen 3: **Pencocokan, Transport PC, dan ekspor** CSV/XLSX.
    - Agen 4: **Deploy & dokumentasi** — Dockerfile, docker-compose, `start.sh`/`stop.sh`, Railway, README ini.
-5. **Integrasi & pengujian** — Pemeriksaan tipe (`tsc --noEmit`), build image Docker, uji `docker compose up` penuh (migrasi, seed 7 interviewer, `/api/health`, API daftar interviewer), lalu penyelarasan antarbagian.
+5. **Integrasi & pengujian** — Pemeriksaan tipe (`tsc --noEmit`), build image Docker, uji `docker compose up` penuh (migrasi, seed 7 interviewer, `/api/health`, API daftar interviewer), uji end-to-end alur lengkap pada build produksi (login admin → buat project → kirim & perbaiki rekap → pencocokan → setujui transport → transport terkunci → riwayat revisi → ekspor CSV/XLSX), perbaikan dependensi exceljs di image Docker, lalu penyelarasan antarbagian.
 
 ---
 
@@ -454,6 +454,6 @@ Railway juga menyediakan fitur *Backups* pada volume database (tergantung paket)
 - Pencocokan data masuk dengan penandaan selisih, status "Belum dicocokkan", catatan & status tindak lanjut.
 - Progres project terhadap target (versi rekap & versi data masuk).
 - Manajemen interviewer (tambah, ubah nama, nonaktif/aktif) dan project (kode, nama, target, tanggal mulai, Project PC, status).
-- Ekspor CSV (per tab) dan XLSX (5 sheet).
+- Ekspor CSV (per tab) dan XLSX (6 sheet: Rekap Harian, Rekap Periode, Pencocokan, Transport, Interviewer, Project).
 - Deploy: Dockerfile multi-stage (node:22-alpine, non-root, health check), docker-compose dengan PostgreSQL 16 + volume persisten, `start.sh`/`stop.sh`, dukungan database eksternal, konfigurasi Railway.
 - Migrasi database & seed 7 interviewer awal otomatis saat container start.
