@@ -380,6 +380,7 @@ Railway juga menyediakan fitur *Backups* pada volume database (tergantung paket)
 
 - **Interviewer tidak login.** Sistem tidak memverifikasi bahwa pengisi adalah orang yang namanya dipilih. Bagikan link form **hanya di grup internal tim**.
 - **Ganti password admin** dari nilai default; `start.sh` sudah membuatnya acak. Simpan di password manager, jangan dibagikan di grup interviewer.
+- `ADMIN_PASSWORD` **wajib** diisi. Tidak ada password bawaan; jika kosong, login dashboard selalu ditolak.
 - `SESSION_SECRET` harus acak dan rahasia (≥ 32 karakter). Mengganti nilainya memaksa semua admin login ulang.
 - Gunakan HTTPS untuk akses dari internet (Railway sudah HTTPS) dan set `COOKIE_SECURE=true`.
 - PostgreSQL bawaan Docker **tidak** di-expose ke host/jaringan secara default.
@@ -445,6 +446,9 @@ Railway juga menyediakan fitur *Backups* pada volume database (tergantung paket)
 ---
 
 ## 15. Log Revisi Versi
+
+### v1.0.1 — 2026-11-18 — Keamanan login
+- Menghapus password admin cadangan (`admin`) yang dipakai bila `ADMIN_PASSWORD` kosong. Kini login ditolak dengan pesan jelas sampai `ADMIN_PASSWORD` diatur.
 
 ### v1.0.0 — 2026-11-17 — Rilis pertama
 - Form rekap akhir hari interviewer tanpa login, mobile-first: pilih nama (diingat di perangkat), tanggal (hari ini s.d. 7 hari ke belakang, WIB), perolehan & area per project, jam kerja, area lain, catatan, transport PC.

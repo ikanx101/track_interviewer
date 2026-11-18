@@ -28,7 +28,9 @@ export async function verifySessionToken(token: string | undefined): Promise<boo
 
 /** Bandingkan password tanpa membocorkan panjang lewat timing kasar. */
 export function checkPassword(input: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || "admin";
+  const expected = process.env.ADMIN_PASSWORD;
+  // Tanpa ADMIN_PASSWORD, login selalu ditolak (tidak ada password cadangan).
+  if (!expected) return false;
   if (input.length !== expected.length) return false;
   let diff = 0;
   for (let i = 0; i < input.length; i++) diff |= input.charCodeAt(i) ^ expected.charCodeAt(i);
