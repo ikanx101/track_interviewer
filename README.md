@@ -118,6 +118,7 @@ Browser Laptop (Admin)   ──► /admin/*     ─┼─► Next.js (server.js,
 | `/admin/pencocokan` | Tab **Pencocokan** |
 | `/admin/transport` | Tab **Transport PC** |
 | `/admin/kelola` | Tab **Kelola Data** |
+| `/versi` | Halaman **Log Revisi** (versi aplikasi & riwayat perubahan) |
 | `/api/health` | Health check (cek koneksi database) |
 | `/api/public/*` | API form interviewer (daftar interviewer aktif, project, area, rekap) |
 | `/api/admin/*` | API dashboard & ekspor (butuh login) |
@@ -446,6 +447,12 @@ Railway juga menyediakan fitur *Backups* pada volume database (tergantung paket)
 ---
 
 ## 15. Log Revisi Versi
+
+> Log revisi juga tampil di dalam aplikasi pada halaman **`/versi`** (klik nomor versi di form interviewer atau di header dashboard). Sumber datanya `src/lib/version.ts`. Saat rilis baru, tambahkan entri di paling atas file itu, samakan `version` di `package.json`, lalu perbarui bagian ini.
+
+### v1.1.0 — 2026-11-18 — Versi & log revisi di aplikasi
+- Nomor versi aplikasi tampil di form interviewer dan di header dashboard admin.
+- Halaman Log Revisi (`/versi`) berisi riwayat perubahan setiap versi.
 
 ### v1.0.1 — 2026-11-18 — Keamanan login
 - Menghapus password admin cadangan (`admin`) yang dipakai bila `ADMIN_PASSWORD` kosong. Kini login ditolak dengan pesan jelas sampai `ADMIN_PASSWORD` diatur.

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { APP_VERSION } from "@/lib/version";
 
 export const ADMIN_TABS = [
   { href: "/admin", label: "Hari Ini" },
@@ -33,6 +34,7 @@ export default function AdminNav() {
           <span className="hidden text-xs text-slate-500 sm:inline">Interviewer Monitoring at Nutrifood</span>
         </Link>
         <div className="flex items-center gap-2">
+          <Link href="/versi" className="badge-gray hover:bg-slate-200" title="Lihat log revisi">v{APP_VERSION}</Link>
           <button onClick={logout} className="btn-secondary btn-sm hidden lg:inline-flex">Keluar</button>
           <button onClick={() => setOpen(!open)} className="btn-secondary btn-sm lg:hidden" aria-label="Menu">☰ Menu</button>
         </div>

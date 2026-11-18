@@ -10,6 +10,7 @@ import type {
   RekapSaveResult,
 } from "@/components/interviewer/types";
 import RekapSummary from "@/components/interviewer/RekapSummary";
+import { APP_VERSION } from "@/lib/version";
 
 const LS_KEY = "iman.interviewerId";
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
@@ -292,7 +293,10 @@ export default function RekapForm({ serverToday }: { serverToday: string }) {
   const header = (
     <header className="bg-brand-700 px-4 pb-4 pt-5 text-white">
       <div className="mx-auto max-w-xl">
-        <p className="text-xs font-medium uppercase tracking-wider text-brand-100">IMaN · Nutrifood</p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-xs font-medium uppercase tracking-wider text-brand-100">IMaN · Nutrifood</p>
+          <a href="/versi" className="text-xs text-brand-100 underline-offset-2 hover:underline">v{APP_VERSION}</a>
+        </div>
         <h1 className="text-xl font-semibold">Rekap Akhir Hari</h1>
       </div>
     </header>
