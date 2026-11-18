@@ -161,15 +161,22 @@ Tanggal bisnis disimpan sebagai kolom `DATE` dan dihitung menurut zona **WIB (As
 
 ```bash
 git clone <url-repo> iman && cd iman
-./start.sh
+bash start.sh
 ```
 
+Cukup satu perintah itu: PostgreSQL, migrasi database, data awal, dan aplikasi semuanya ikut berjalan.
+
 Yang dilakukan `start.sh`:
-1. Memeriksa Docker & Docker Compose.
-2. Jika `.env` belum ada, membuatnya dari `.env.example` dan **mengisi otomatis** `ADMIN_PASSWORD`, `SESSION_SECRET`, dan `POSTGRES_PASSWORD` acak. **Password admin ditampilkan sekali di terminal — catat!** (bisa dilihat/diganti lagi di file `.env`).
-3. `docker compose up -d --build` → membangun image, menjalankan PostgreSQL + aplikasi.
-4. Saat container aplikasi start: `prisma migrate deploy` → seed 7 interviewer awal (Dwiki, Ingrid, Kodirin, Maria, Merry, Suharyuni, Yani; hanya jika tabel masih kosong) → server.
-5. Menunggu `/api/health` siap, lalu menampilkan:
+1. Memeriksa Docker & Docker Compose (di macOS, Docker Desktop dinyalakan otomatis bila belum berjalan) dan memastikan port 1526 belum dipakai program lain.
+2. Menyiapkan `.env`: dibuat dari `.env.example` bila belum ada, dan variabel yang belum terisi (`SESSION_SECRET`, `POSTGRES_PASSWORD`) dilengkapi otomatis dengan nilai acak.
+3. **Menanyakan password Admin Field** di terminal (input tersembunyi, diketik dua kali):
+   - minimal 6 karakter, tanpa spasi, tanda kutip, `$`, `\` atau backtick;
+   - tekan **ENTER** untuk tetap memakai password yang sekarang (atau, saat pertama kali, membuat password acak yang ditampilkan di layar);
+   - password disimpan di `.env` (`ADMIN_PASSWORD`) dan langsung berlaku.
+   - Tanpa prompt (otomatisasi): `IMAN_ADMIN_PASSWORD=PasswordKu123 bash start.sh`.
+4. `docker compose up -d --build` → membangun image, menjalankan PostgreSQL + aplikasi.
+5. Saat container aplikasi start: `prisma migrate deploy` → seed 7 interviewer awal (Dwiki, Ingrid, Kodirin, Maria, Merry, Suharyuni, Yani; hanya jika tabel masih kosong) → server.
+6. Menunggu `/api/health` siap, lalu menampilkan (bila gagal, log terakhir langsung ditampilkan):
    - Form Interviewer: **http://localhost:1526**
    - Dashboard Admin: **http://localhost:1526/admin**
 
@@ -192,7 +199,7 @@ Opsi lain:
 
 | Variabel | Wajib | Default | Keterangan |
 |---|---|---|---|
-| `ADMIN_PASSWORD` | Ya | dibuat acak oleh `start.sh` | Password login dashboard Admin Field |
+| `ADMIN_PASSWORD` | Ya | ditanyakan oleh `start.sh` | Password login dashboard Admin Field |
 | `SESSION_SECRET` | Ya | dibuat acak oleh `start.sh` | Secret penandatangan cookie sesi (≥ 32 karakter acak). Mengganti nilai ini membuat semua sesi admin logout |
 | `POSTGRES_PASSWORD` | Tidak | dibuat acak oleh `start.sh` | Password PostgreSQL bawaan (hanya berlaku saat volume pertama kali dibuat) |
 | `POSTGRES_USER` / `POSTGRES_DB` | Tidak | `iman` / `iman` | User & nama database bawaan |
@@ -449,6 +456,12 @@ Railway juga menyediakan fitur *Backups* pada volume database (tergantung paket)
 ## 15. Log Revisi Versi
 
 > Log revisi juga tampil di dalam aplikasi pada halaman **`/versi`** (klik nomor versi di form interviewer atau di header dashboard). Sumber datanya `src/lib/version.ts`. Saat rilis baru, tambahkan entri di paling atas file itu, samakan `version` di `package.json`, lalu perbarui bagian ini.
+
+### v1.1.1 — 2026-11-18 — Satu perintah `bash start.sh`
+- `start.sh` menanyakan password Admin Field saat start (ENTER = tetap memakai password lama); mendukung `IMAN_ADMIN_PASSWORD` untuk mode tanpa prompt.
+- `start.sh` melengkapi otomatis `.env` yang belum lengkap, menyalakan Docker Desktop (macOS), mengecek port bentrok, dan menampilkan log bila aplikasi gagal start.
+- Docker Compose tidak lagi memakai password admin bawaan `admin`.
+- Form interviewer: pesan "Periksa kembali isian…" hilang otomatis setelah semua isian merah diperbaiki.
 
 ### v1.1.0 — 2026-11-18 — Versi & log revisi di aplikasi
 - Nomor versi aplikasi tampil di form interviewer dan di header dashboard admin.

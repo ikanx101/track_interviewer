@@ -15,7 +15,7 @@ if [ -z "${DATABASE_URL:-}" ]; then
 fi
 
 if [ -z "${ADMIN_PASSWORD:-}" ]; then
-  echo "[IMaN] PERINGATAN: ADMIN_PASSWORD kosong, password default 'admin' dipakai. Segera ganti!" >&2
+  echo "[IMaN] PERINGATAN: ADMIN_PASSWORD kosong, login dashboard akan ditolak sampai diatur." >&2
 fi
 if [ -z "${SESSION_SECRET:-}" ]; then
   echo "[IMaN] PERINGATAN: SESSION_SECRET kosong. Atur string acak minimal 32 karakter." >&2

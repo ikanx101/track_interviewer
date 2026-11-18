@@ -41,7 +41,8 @@ services:
       PORT: 1526
       # Jika DATABASE_URL kosong, pakai database bawaan (service `db`).
       DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-iman}:${POSTGRES_PASSWORD:-iman_password}@db:5432/${POSTGRES_DB:-iman}?schema=public}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
+      # Tidak ada password bawaan; start.sh mengisinya otomatis di .env bila kosong.
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
       SESSION_SECRET: ${SESSION_SECRET:-iman-ganti-secret-ini-minimal-32-karakter}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
     # Agar DATABASE_URL eksternal bisa menunjuk ke PostgreSQL di komputer host

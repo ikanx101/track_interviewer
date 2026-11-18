@@ -105,6 +105,12 @@ export default function RekapForm({ serverToday }: { serverToday: string }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Hapus pesan validasi di bawah form begitu semua isian merah sudah diperbaiki.
+  useEffect(() => {
+    const vals = Object.values(errors);
+    if (vals.length > 0 && vals.every((v) => !v)) setSubmitError(null);
+  }, [errors]);
   const [saved, setSaved] = useState<RekapSaveResult | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
   const reqId = useRef(0);

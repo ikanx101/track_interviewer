@@ -11,6 +11,17 @@ export type ChangelogEntry = {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: "1.1.1",
+    date: "2026-11-18",
+    title: "Satu perintah bash start.sh",
+    changes: [
+      "start.sh menanyakan password Admin Field saat dijalankan (ENTER = tetap memakai password lama).",
+      "start.sh melengkapi .env otomatis, menyalakan Docker Desktop (macOS), mengecek port bentrok, dan menampilkan log bila gagal start.",
+      "Docker Compose tidak lagi memakai password admin bawaan.",
+      "Form interviewer: pesan peringatan hilang otomatis setelah semua isian yang salah diperbaiki.",
+    ],
+  },
+  {
     version: "1.1.0",
     date: "2026-11-18",
     title: "Versi & log revisi di aplikasi",
